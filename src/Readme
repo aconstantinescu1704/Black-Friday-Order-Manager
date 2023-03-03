@@ -1,0 +1,35 @@
+Tema 2 - APD
+
+--------Tema2.java----------
+
+1. Extragem argumentele metodei main
+2. Initializam un atomic integer la 0 si cream 2 thread pool-uri de unde pot
+extrage Taskuri P thread-uri pt fiecare nivel
+3. Submit-uim in thread pool un numar de de P Task-uri ce citesc si proceseaza comenzile.
+
+--------Task Order----------------
+1. Pentru a mentine evidenta comenzilor procesate(evitam cazul in care 2 thread-uri
+proceseaza aceeasi comanda), mentinem evidenta lor prin numarul liniei de unde a fost 
+citita comanda.
+2. Dam submit la comanda de pe linia curenta + P in pool -ul comenzilor.(asa asiguram procesarea tuturor
+ comenzilor)
+3. Cautam comenzile in funtie de linia repartizata taskului. Odata gasita comanda adaugam in thread
+pool Product Taskuri Product - ce cites si proceseaza produsele. Adaugam atatea taskuri 2 cat ne arata comanda
+4. Apelam la un semafor prin care fortam ca toate produsele din comanda sa fie procesate inainte de scrierea
+comenzii drept shipped in fisier. Semaforul este initializat la 1 - capacitatea comenzii iar acesta este 
+trimis mai departe prin constructor catre clasa task-ului de nivel 2 ce da release la semafor dupa ce 
+proceseaza produsul.
+
+
+------------Task Product-----------------
+1. Pentru a mentine evidenta produselor procesate(evitam cazul in care 2 thread-uri
+proceseaza acelasi produs), mentinem evidenta lor prin al catalea produs din comanda este.
+2. Cautam produsele in funtie de match-ul de id si contor-ul privind nr produsului din comanda.
+Odata gasit produsul scriem in fisierul de out id, produs alaturi de shipped pentru a marca 
+finalul procesarii produsului.
+3. Dam release semaforului
+
+
+------Citire di scriere------------
+Pentru a putea scrie/citi acelasi fisier in paralel de P thread-uri am apelat la clasele BufferedReader
+BufferedWriter care sunt thread safe
